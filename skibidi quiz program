@@ -1,0 +1,50 @@
+#python brainrot quiz game
+
+questions = ("1. Who has the ultimate rizz game in Ohio?",
+             "2. What happens when a Skibidi toilet pulls up in Ohio?",
+             "3. How do you get the ultimate Sigma aura?",
+             "4. Why is nobody normal in Ohio?",
+             "5.What’s the Ohio version of a pickup line?")
+options = (("A. Sigma Chad with an aura of meowing", "B. Gyatt-lord Skibidi Bop vibes", "C. The guy who brought a chair to a rap battle", "D.That one NPC on Main Street"),
+           ("A. It gets gyatt-ed into another timeline", "B. Sigma grindset kicks in", "C. Everyone starts meowing in unison","D. They host a Rizz-Off at Walmart"),
+           ("A. Gyatt energy with a side of Skibidi swagger", "B. Rizz so strong it breaks NPC logic", "C. Move to Ohio, obviously", "D. Keep meowing until they surrender"),
+           ("A. Too much Skibidi, not enough Sigma", "B. The aura is built different", "C. They meowed their humanity away", "D. Gyatt energy got out of hand"),
+           ("A. “Do you even Skibidi, bro?”", "B. “Your gyatt just rizzed up my aura.”", "C. “Meow me your number.”", "D. “I’m Sigma, but for you, I’ll be Beta.”"))
+
+answers = ("A", "D", "B", "B", 'B')
+guesses = []
+score = 0
+question_num = 0
+
+for question in questions:
+    print("------------------------------------------------------------")
+    print(question)
+
+    for option in options[question_num]:
+        print(option)
+    guess = input("Enter your guess: ").upper()
+    guesses.append(guess)
+    if guess == answers[question_num]:
+        score += 1
+        print("CORRECT!")
+    else:
+        print("INCORRECT!")
+        print(f"{answers[question_num]} is the correct answer")
+    question_num += 1
+
+print("----------------------")
+print("        RESULT        ")
+print("----------------------")
+
+print("answers: ", end="")
+for answer in answers:
+    print(answer, end=" ")
+print()
+
+print("guesses: ", end="")
+for guess in guesses:
+    print(guess, end=" ")
+print()
+
+score = int(score / len(questions)*100)
+print(f"Your score is {score}%")
