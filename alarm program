@@ -4,7 +4,7 @@ import pygame
 
 def set_alarm(alarm_time):
     print(f"Alarm set for {alarm_time}")
-    sound_file = "Enter the absolute file path to your music here"
+    sound_file = "Enter the absolute/relative file path to your music here"
     is_running = True
     while is_running:
         current_time = datetime.datetime.now().strftime("%H:%M:%S")
