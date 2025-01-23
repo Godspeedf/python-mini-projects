@@ -1,0 +1,84 @@
+import requests
+import json
+
+BASE_URL = "https://api.gdc.cancer.gov/"
+
+def get_projects():
+    endpoint = f"{BASE_URL}projects"
+
+    params = {
+        "size": 10,
+        "from": 0,
+        "fields": "project_id,name,primary_site",
+        "format": "JSON"
+    }
+
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        projects = response.json()
+        return projects["data"]["hits"]
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        return None
+
+def get_project_by_id(project_id):
+    endpoint = f"{BASE_URL}projects/{project_id}"
+
+    try:
+
+        response = requests.get(endpoint)
+        response.raise_for_status()
+
+        project = response.json()
+        return project.get("data", None)
+
+    except requests.exceptions.RequestException:
+        return None
+
+
+def display_projects(projects):
+    if not projects:
+        print("No projects found or an error occurred.")
+        return
+
+    print("\nProjects from GDC API:")
+    for project in projects:
+        print(f"- Project ID: {project['project_id']}")
+        print(f"  Name: {project['name']}")
+        print(f"  Primary Site: {project['primary_site']}\n")
+
+
+def display_project_details(project):
+    if not project:
+        print("No project found with the given ID or an error occurred.")
+        return
+
+    print("\nProject Details:")
+    print(f"- Project ID: {project['project_id']}")
+    print(f"  Name: {project['name']}")
+    print(f"  Primary Site: {project['primary_site']}")
+    print(f"  Disease Type: {project.get('disease_type', 'N/A')}")
+    print(f"  Program Name: {project.get('program', {}).get('name', 'N/A')}")
+    print(f"  Summary: {project.get('summary', {}).get('experimental_strategies', [])}")
+
+
+if __name__ == "__main__":
+    projects = get_projects()
+    display_projects(projects)
+
+    while True:
+        project_id = input("\nEnter a specific Project ID to retrieve details (or type 'exit' to quit): ").strip()
+
+        if project_id.lower() == "exit":
+            print("Exiting the program. Goodbye!")
+            break
+
+        project = get_project_by_id(project_id)
+
+        if project:
+            display_project_details(project)
+            break 
+        else:
+            print("Invalid Project ID. Please try again or type 'exit' to quit.")
